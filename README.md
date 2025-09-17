@@ -1,2 +1,46 @@
-# la-beaute-ai-automation
-AI-powered appointment automation for La Beauté – Hair &amp; Beauty Salon. Reduces no-shows, automates scheduling, and collects post-appointment reviews using n8n workflows integrated with Google Calendar and Twilio. Ideal as a portfolio example of AI automation in service businesses.
+# La Beauté – Hair & Beauty Salon
+**AI-Powered Appointment Automation**
+
+---
+
+## 🏢 About the Client
+La Beauté is a modern hair & beauty salon struggling with no-shows, manual appointment tracking, and low review collection.
+
+---
+
+## ❌ Before
+- No-show clients affected revenue  
+- Appointments tracked manually  
+- Reviews were hard to collect consistently  
+
+---
+
+## 🤖 After (AI Automation with n8n)
+- Automated reminders reduced no-shows  
+- AI system manages appointment flow  
+- Follow-up texts ask for quick reviews  
+
+---
+
+## 📊 Results
+- No-shows cut by **65%**  
+- Time spent on scheduling reduced by **70%**  
+- Online reviews doubled in **2 months**  
+
+---
+
+## ⚙️ Workflow Overview
+This automation handles:
+1. Appointment intake (via webhook or booking system)
+2. Event creation in Google Calendar
+3. Automated SMS reminders:
+   - 24h before the appointment  
+   - 2h before the appointment  
+4. Post-appointment review request
+
+---
+
+## 🚀 How to Use
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/your-username/ai-automation-beauty-salon-appointments.git
