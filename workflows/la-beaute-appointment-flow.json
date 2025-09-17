@@ -1,1 +1,116 @@
-
+{
+  "name": "La Beaute - Appointment Flow",
+  "nodes": [
+    {
+      "id": "1",
+      "name": "Webhook - New Appointment",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "new-appointment"
+      }
+    },
+    {
+      "id": "2",
+      "name": "Create Calendar Event",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1,
+      "parameters": {
+        "operation": "create",
+        "calendarId": "primary",
+        "start": "={{$json[\"appointmentStart\"]}}",
+        "end": "={{$json[\"appointmentEnd\"]}}",
+        "summary": "={{$json[\"clientName\"]}} - Appointment",
+        "description": "Service: {{$json[\"service\"]}} | Phone: {{$json[\"clientPhone\"]}}"
+      },
+      "credentials": {
+        "googleApi": "Google Calendar Account"
+      }
+    },
+    {
+      "id": "3",
+      "name": "Wait - 24h Before",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "parameters": {
+        "amount": 24,
+        "unit": "hours",
+        "waitTill": "={{$json[\"appointmentStart\"]}}"
+      }
+    },
+    {
+      "id": "4",
+      "name": "Send SMS - Reminder 24h",
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "parameters": {
+        "from": "+1234567890",
+        "to": "={{$json[\"clientPhone\"]}}",
+        "message": "Hello {{$json[\"clientName\"]}}, this is La Beauté 💇‍♀️. Reminder: your appointment is tomorrow at {{$json[\"appointmentTime\"]}}."
+      },
+      "credentials": {
+        "twilioApi": "Twilio Account"
+      }
+    },
+    {
+      "id": "5",
+      "name": "Wait - 2h Before",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "parameters": {
+        "amount": 2,
+        "unit": "hours",
+        "waitTill": "={{$json[\"appointmentStart\"]}}"
+      }
+    },
+    {
+      "id": "6",
+      "name": "Send SMS - Reminder 2h",
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "parameters": {
+        "from": "+1234567890",
+        "to": "={{$json[\"clientPhone\"]}}",
+        "message": "Hi {{$json[\"clientName\"]}}, just a reminder: your appointment at La Beauté starts in 2 hours. See you soon! 🌸"
+      },
+      "credentials": {
+        "twilioApi": "Twilio Account"
+      }
+    },
+    {
+      "id": "7",
+      "name": "Wait - After Appointment",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "parameters": {
+        "amount": 1,
+        "unit": "hours",
+        "waitTill": "={{$json[\"appointmentEnd\"]}}"
+      }
+    },
+    {
+      "id": "8",
+      "name": "Send SMS - Review Request",
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "parameters": {
+        "from": "+1234567890",
+        "to": "={{$json[\"clientPhone\"]}}",
+        "message": "Thanks {{$json[\"clientName\"]}} for visiting La Beauté! 💕 We'd love your feedback. Please leave us a quick review here: https://g.page/r/example-review"
+      },
+      "credentials": {
+        "twilioApi": "Twilio Account"
+      }
+    }
+  ],
+  "connections": {
+    "1": { "main": [[{ "node": "Create Calendar Event", "type": "main" }]] },
+    "2": { "main": [[{ "node": "Wait - 24h Before", "type": "main" }]] },
+    "3": { "main": [[{ "node": "Send SMS - Reminder 24h", "type": "main" }]] },
+    "4": { "main": [[{ "node": "Wait - 2h Before", "type": "main" }]] },
+    "5": { "main": [[{ "node": "Send SMS - Reminder 2h", "type": "main" }]] },
+    "6": { "main": [[{ "node": "Wait - After Appointment", "type": "main" }]] },
+    "7": { "main": [[{ "node": "Send SMS - Review Request", "type": "main" }]] }
+  }
+}
