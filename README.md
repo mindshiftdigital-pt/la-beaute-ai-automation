@@ -38,9 +38,3 @@ This automation handles:
    - 2h before the appointment  
 4. Post-appointment review request
 
----
-
-## 🚀 How to Use
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/your-username/ai-automation-beauty-salon-appointments.git
